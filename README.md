@@ -11,3 +11,20 @@ E-Commerce application for Football Supplies Nepal.
 ## Security Features
 - Account lockout after 3 failed attempts (15 minutes duration)
 - BCrypt password hashing
+
+## Installation
+
+1. Clone the repository
+2. Install Backend Dependencies:
+   ```bash
+   cd backend
+   npm install
+   ```
+3. Install Frontend Dependencies:
+   ```bash
+   cd frontend
+   npm install
+   ```
+4. Setup Environment Variables
+   - Create .env in backend
+
