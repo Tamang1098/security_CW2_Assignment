@@ -9,6 +9,11 @@ const sendEmail = require('../utils/sendEmail');
 const JWT_SECRET = process.env.JWT_SECRET || 'ecommerce_jwt_secret_key_2024_change_in_production';
 
 // Register
+/**
+ * @route   POST /api/auth/register
+ * @desc    Register a new user
+ * @access  Public
+ */
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
