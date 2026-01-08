@@ -1,3 +1,7 @@
+/**
+ * Main Server Entry Point
+ * Handles database connection, middleware configuration, and route setup.
+ */
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
