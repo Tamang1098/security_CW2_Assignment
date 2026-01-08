@@ -28,3 +28,11 @@ E-Commerce application for Football Supplies Nepal.
 4. Setup Environment Variables
    - Create .env in backend
 
+## API Endpoints
+
+### Auth
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/verify-otp` - Verify 2FA OTP
+
+
