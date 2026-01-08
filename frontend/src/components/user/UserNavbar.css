@@ -1,0 +1,211 @@
+.user-navbar {
+  background: white;
+  color: #333;
+  padding: 1rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.user-navbar .navbar-container {
+  max-width: 1400px;
+  margin: 0;
+  padding: 0 2rem 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.user-navbar .navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 0 0 auto;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.user-navbar .navbar-logo {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-navbar .navbar-logo h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0;
+  color: #2E7D32;
+}
+
+.user-navbar .navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-navbar .navbar-welcome {
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+  white-space: nowrap;
+}
+
+.user-navbar .navbar-link {
+  color: #333;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  transition: all 0.3s;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.user-navbar .navbar-link:hover {
+  background: #333333;
+  color: #ffffff;
+  color: white;
+}
+
+.user-navbar .navbar-link.active {
+  background: #2E7D32;
+  color: white;
+}
+
+.user-navbar .navbar-link.active:hover {
+  background: #333333;
+  color: #ffffff;
+  color: white;
+}
+
+.user-navbar .navbar-logout {
+  background: transparent;
+  color: #333;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.user-navbar .navbar-logout:hover {
+  background: #333333;
+  color: #ffffff;
+  color: white;
+}
+
+.user-navbar .navbar-admin-login {
+  background: #2E7D32;
+  color: white;
+}
+
+.user-navbar .navbar-admin-login:hover {
+  background: #333333;
+  color: #ffffff;
+  color: white;
+}
+
+.user-navbar .navbar-language-dropdown {
+  background: white;
+  color: #333;
+  border: 2px solid #e0e0e0;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 120px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ff7043' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+}
+
+.user-navbar .navbar-language-dropdown:hover {
+  border-color: #2E7D32;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
+}
+
+.user-navbar .navbar-language-dropdown:focus {
+  outline: none;
+  border-color: #2E7D32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+
+
+.notification-badge-navbar {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #dc3545;
+  color: white;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0 4px;
+  line-height: 1;
+  z-index: 10;
+}
+
+.notification-badge-navbar[data-count="10+"] {
+  min-width: 24px;
+  padding: 0 3px;
+  font-size: 0.6rem;
+}
+
+@media (max-width: 768px) {
+  .user-navbar .navbar-container {
+    padding: 0 1rem;
+    flex-wrap: wrap;
+  }
+
+  .user-navbar .navbar-logo h2 {
+    font-size: 1.4rem;
+  }
+
+  .user-navbar .navbar-menu {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .user-navbar .navbar-left {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .user-navbar .navbar-welcome {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+}
+

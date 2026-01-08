@@ -1,0 +1,262 @@
+.navbar {
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background 0.3s;
+}
+
+/* Navbar for landing page and user pages - White background */
+.navbar-user {
+  background: white;
+  color: #333;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+/* Navbar for admin page - Football Green background */
+.navbar-admin {
+  background: #2E7D32;
+  color: white;
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s;
+}
+
+.navbar-user .navbar-logo {
+  color: #333;
+}
+
+.navbar-admin .navbar-logo {
+  color: white;
+}
+
+.navbar-logo h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0;
+  transition: color 0.3s;
+}
+
+.navbar-user .navbar-logo h2 {
+  color: #333;
+  text-shadow: none;
+}
+
+.navbar-admin .navbar-logo h2 {
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-cart {
+  color: white;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  transition: all 0.3s;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-cart:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.cart-badge {
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+.navbar-user,
+.navbar-login-btn,
+.navbar-register-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid white;
+  font-size: 0.95rem;
+}
+
+.navbar-login-btn {
+  background: transparent;
+  transition: all 0.3s;
+}
+
+.navbar-user .navbar-login-btn {
+  color: #333;
+  border-color: #333;
+}
+
+.navbar-user .navbar-login-btn:hover {
+  background: #f5f5f5;
+}
+
+.navbar-admin .navbar-login-btn {
+  color: white;
+  border-color: white;
+}
+
+.navbar-admin .navbar-login-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.navbar-register-btn {
+  transition: all 0.3s;
+}
+
+.navbar-user .navbar-register-btn {
+  background: #2E7D32;
+  color: white;
+  border-color: #2E7D32;
+}
+
+.navbar-user .navbar-register-btn:hover {
+  background: #333333;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.navbar-admin .navbar-register-btn {
+  background: white;
+  color: #2E7D32;
+  border-color: white;
+}
+
+.navbar-admin .navbar-register-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-link {
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.navbar-user .navbar-link {
+  color: #333;
+  background: #f5f5f5;
+}
+
+.navbar-user .navbar-link:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+.navbar-admin .navbar-link {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-admin .navbar-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.navbar-button {
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.navbar-user .navbar-button {
+  background: #2E7D32;
+  color: white;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.navbar-user .navbar-button:hover {
+  background: #333333;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+}
+
+.navbar-admin .navbar-button {
+  background: white;
+  color: #2E7D32;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-admin .navbar-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 0 1rem;
+    flex-wrap: wrap;
+  }
+
+  .navbar-logo h2 {
+    font-size: 1.4rem;
+  }
+
+  .navbar-menu {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .navbar-user,
+  .navbar-guest {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .navbar-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

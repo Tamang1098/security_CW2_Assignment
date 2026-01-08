@@ -1,0 +1,18 @@
+.toast-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-container > * {
+  pointer-events: auto;
+  margin: 0;
+}
+

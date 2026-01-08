@@ -1,0 +1,255 @@
+.footer {
+    background: #ffffff;
+    color: #333;
+    width: 100%;
+    position: relative;
+    margin-top: 2rem;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+    border-top: 1px solid #e0e0e0;
+    box-sizing: border-box;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* 3 Equal Columns */
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Footer Sections */
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Branding Section */
+.branding-section {
+    text-align: left;
+}
+
+.footer-brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: black;
+    /* Matches brand color */
+    margin: 0;
+    line-height: 1.2;
+}
+
+.footer-slogan {
+    font-size: 1rem;
+    color: black;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Contact Section - Centered */
+.contact-section {
+    align-items: center;
+    text-align: center;
+}
+
+.centered-content {
+    align-items: center;
+}
+
+.footer-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: black;
+    margin: 0;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Social Section - Right Aligned */
+.social-section {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.social-section .footer-content {
+    align-items: flex-end;
+}
+
+.social-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 2px solid #2E7D32;
+    border-radius: 6px;
+    color: #2E7D32;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+    width: fit-content;
+}
+
+.social-link:hover {
+    background: #333333;
+  color: #ffffff;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
+}
+
+.social-icon {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* Contact Items */
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    /* background: #f8f9fa; No background requested explicitly, but kept for readability if desired. 
+       User said "contact harurakha dekhney gari" -> "visible clearly". 
+       Let's keep the existing bubble style but maybe simpler? 
+       Using previous style is fine. */
+    background: transparent;
+    border-radius: 6px;
+    transition: all 0.3s;
+    /* border: 1px solid #e9ecef; */
+}
+
+.contact-item:hover {
+    transform: translateX(3px);
+    color: #2E7D32;
+}
+
+.contact-icon {
+    font-size: 1.1rem;
+}
+
+.contact-link {
+    color: black;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: default;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    background: #f8f9fa;
+    padding: 1rem 2rem;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 1rem;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size:1rem;
+    color:black;
+    font-weight:bold;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .shop-instructions {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-heading {
+        font-size: 0.95rem;
+    }
+
+    .shop-instructions li {
+        padding-left: 2.25rem;
+        font-size: 0.8rem;
+    }
+
+    .shop-instructions li::before {
+        width: 18px;
+        height: 18px;
+        font-size: 0.65rem;
+        left: 0.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-container {
+        padding: 1rem;
+    }
+
+    .footer-heading {
+        font-size: 0.9rem;
+    }
+
+    .contact-item {
+        padding: 0.3rem 0.4rem;
+    }
+
+    .contact-link {
+        font-size: 0.8rem;
+    }
+
+    .shop-instructions li {
+        padding: 0.4rem 0.4rem 0.4rem 2rem;
+        font-size: 0.75rem;
+    }
+
+    .shop-instructions li::before {
+        width: 16px;
+        height: 16px;
+        font-size: 0.6rem;
+        left: 0.4rem;
+    }
+
+    .footer-bottom {
+        padding: 0.5rem 1rem;
+    }
+
+    .footer-bottom p {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .footer-container {
+        padding: 0.75rem;
+    }
+
+    .shop-instructions li {
+        font-size: 0.7rem;
+        padding-left: 1.75rem;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}
