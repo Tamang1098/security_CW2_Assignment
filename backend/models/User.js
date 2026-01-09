@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   },
   otp: {
     type: String,
-    select: false // Do not return OTP by default
+    select: false
   },
   otpExpires: {
     type: Date,
