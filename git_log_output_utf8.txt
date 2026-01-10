@@ -1,0 +1,20 @@
+﻿613abbe | 2026-01-09 10:19:07 +0545 | 2026-01-09 10:19:07 +0545 | Project Updating
+6798232 | 2026-01-09 10:19:06 +0545 | 2026-01-09 10:19:06 +0545 | Project Updating
+fc68645 | 2026-01-09 10:19:06 +0545 | 2026-01-09 10:19:06 +0545 | Project Updating
+4d8ce27 | 2026-01-09 10:19:06 +0545 | 2026-01-09 10:19:06 +0545 | Project Updating
+ad4556f | 2026-01-09 10:19:06 +0545 | 2026-01-09 10:19:06 +0545 | Project Updating
+8a07f4e | 2026-01-09 10:19:06 +0545 | 2026-01-09 10:19:06 +0545 | Project Updating
+b5ff228 | 2026-01-09 10:19:05 +0545 | 2026-01-09 10:19:05 +0545 | Project Updating
+3feb07d | 2026-01-08 09:07:21 +0545 | 2026-01-08 09:07:21 +0545 | Project Updating
+465656c | 2026-01-08 09:04:35 +0545 | 2026-01-08 09:04:35 +0545 | docs(backend): add backend specific readme
+6cb71e8 | 2026-01-08 09:04:06 +0545 | 2026-01-08 09:04:06 +0545 | docs: list available API endpoints
+d943deb | 2026-01-08 09:03:44 +0545 | 2026-01-08 09:03:44 +0545 | docs: add installation steps
+30a66cf | 2026-01-08 09:03:18 +0545 | 2026-01-08 09:03:18 +0545 | docs: add schema documentation
+7b13cb9 | 2026-01-08 09:02:56 +0545 | 2026-01-08 09:02:56 +0545 | docs: document auth routes
+24f3873 | 2026-01-08 09:02:34 +0545 | 2026-01-08 09:02:34 +0545 | docs: add comments to server configuration
+e617bf6 | 2026-01-08 09:01:56 +0545 | 2026-01-08 09:01:56 +0545 | docs: create project readme
+5bfd080 | 2026-01-08 08:58:32 +0545 | 2026-01-08 08:58:32 +0545 | test(auth): add script to verify lockout
+9d2eed3 | 2026-01-08 08:58:20 +0545 | 2026-01-08 08:58:20 +0545 | feat(auth): implement account lockout logic
+dae222e | 2026-01-08 08:58:08 +0545 | 2026-01-08 08:58:08 +0545 | feat(auth): add loginAttempts schema to User model
+3ec126a | 2026-01-08 08:57:53 +0545 | 2026-01-08 08:57:53 +0545 | feat(frontend): initial react setup
+9b62517 | 2026-01-08 08:57:38 +0545 | 2026-01-08 08:57:38 +0545 | feat(backend): initial server setup
