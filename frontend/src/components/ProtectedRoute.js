@@ -19,12 +19,12 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
     }
 
     if (!isAuthenticated) {
-        // Redirect to home if not authenticated (token not present/OTP not done)
+
         return <Navigate to="/" state={{ from: location }} replace />;
     }
 
     if (adminOnly && user?.role?.toLowerCase() !== 'admin') {
-        // If user is logged in but not admin, and tries to access admin route
+
         console.warn('[PROTECTED] Access denied: User is not admin', user?.role);
         return <Navigate to="/" replace />;
     }

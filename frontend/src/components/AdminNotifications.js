@@ -6,7 +6,7 @@ const AdminNotifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
-  // eslint-disable-next-line no-unused-vars
+
   const [selectedNotification, setSelectedNotification] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [reviewDetails, setReviewDetails] = useState(null);
@@ -14,7 +14,7 @@ const AdminNotifications = () => {
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30000); // Poll every 30 seconds
+    const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
   }, []);
 
@@ -38,7 +38,7 @@ const AdminNotifications = () => {
   };
 
   const deleteNotification = async (id, e) => {
-    e.stopPropagation(); // Prevent triggering the notification click
+    e.stopPropagation();
     if (!window.confirm('Are you sure you want to delete this notification?')) {
       return;
     }
@@ -61,7 +61,7 @@ const AdminNotifications = () => {
       const productRes = await axios.get(`https://localhost:5000/api/products/${notification.metadata.productId}`);
       const product = productRes.data;
 
-      // Find the specific review - try to match by user ID
+
       const review = product.reviews?.find(r => {
         const reviewUserId = r.user?._id?.toString() || r.user?.toString();
         const notificationUserId = notification.metadata.userId?.toString();
@@ -84,7 +84,7 @@ const AdminNotifications = () => {
           }
         });
       } else {
-        // If review not found, use metadata info
+
         setReviewDetails({
           product: {
             _id: product._id,
@@ -115,7 +115,7 @@ const AdminNotifications = () => {
       setSelectedNotification(notification);
       setShowDetailModal(true);
     } else {
-      // For other notification types, just mark as read
+
       setShowDropdown(false);
     }
   };

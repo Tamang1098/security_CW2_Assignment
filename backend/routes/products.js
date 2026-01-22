@@ -3,7 +3,7 @@ const router = express.Router();
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 
-// Get all products (for users)
+
 router.get('/', async (req, res) => {
   try {
     const { category, featured, search, page = 1, limit = 20 } = req.query;
@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get single product
+
 router.get('/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
@@ -50,7 +50,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Get related products
+
 router.get('/:id/related', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -58,7 +58,7 @@ router.get('/:id/related', async (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Find products in the same category, excluding the current product
+
     let relatedProducts = await Product.find({
       category: product.category,
       _id: { $ne: product._id },
@@ -67,7 +67,7 @@ router.get('/:id/related', async (req, res) => {
       .limit(4)
       .sort({ createdAt: -1 });
 
-    // If we don't have enough related products, fill with random products
+
     if (relatedProducts.length < 4) {
       const additionalProducts = await Product.find({
         _id: { $ne: product._id, $nin: relatedProducts.map(p => p._id) },
@@ -85,7 +85,7 @@ router.get('/:id/related', async (req, res) => {
   }
 });
 
-// Get featured products
+
 router.get('/featured/all', async (req, res) => {
   try {
     const products = await Product.find({ featured: true, status: 'active' })
@@ -97,7 +97,7 @@ router.get('/featured/all', async (req, res) => {
   }
 });
 
-// Get categories
+
 router.get('/categories/list', async (req, res) => {
   try {
     const categories = await Category.find({ status: 'active' }).sort({ createdAt: -1 });
@@ -107,7 +107,7 @@ router.get('/categories/list', async (req, res) => {
   }
 });
 
-// Add review to product
+
 router.post('/:id/reviews', require('../middleware/auth').auth, async (req, res) => {
   try {
     const Notification = require('../models/Notification');
@@ -121,7 +121,7 @@ router.post('/:id/reviews', require('../middleware/auth').auth, async (req, res)
       return res.status(400).json({ message: 'Rating must be between 1 and 5' });
     }
 
-    // Check if user already reviewed
+
     const existingReview = product.reviews.find(
       r => r.user.toString() === req.user.id.toString()
     );
@@ -135,14 +135,14 @@ router.post('/:id/reviews', require('../middleware/auth').auth, async (req, res)
       comment: comment || ''
     });
 
-    // Update average rating
+
     const totalRating = product.reviews.reduce((sum, r) => sum + r.rating, 0);
     product.rating = totalRating / product.reviews.length;
 
     await product.save();
     await product.populate('reviews.user', 'name');
 
-    // Create notification for admin
+
     await Notification.create({
       type: 'review',
       message: `New review on "${product.name}" by ${req.user.name}`,
@@ -161,7 +161,7 @@ router.post('/:id/reviews', require('../middleware/auth').auth, async (req, res)
   }
 });
 
-// Delete review (Admin only)
+
 router.delete('/:productId/reviews/:reviewId', require('../middleware/auth').adminAuth, async (req, res) => {
   try {
     const { productId, reviewId } = req.params;
@@ -171,12 +171,12 @@ router.delete('/:productId/reviews/:reviewId', require('../middleware/auth').adm
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Remove the review
+
     product.reviews = product.reviews.filter(
       review => review._id.toString() !== reviewId
     );
 
-    // Recalculate average rating
+
     if (product.reviews.length > 0) {
       const totalRating = product.reviews.reduce((sum, r) => sum + r.rating, 0);
       product.rating = totalRating / product.reviews.length;
@@ -196,4 +196,3 @@ router.delete('/:productId/reviews/:reviewId', require('../middleware/auth').adm
 });
 
 module.exports = router;
-

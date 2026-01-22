@@ -14,7 +14,7 @@ const options = {
         'Content-Type': 'application/json',
         'Content-Length': data.length
     },
-    rejectUnauthorized: false // Ignore self-signed cert
+    rejectUnauthorized: false
 };
 
 const req = https.request(options, (res) => {

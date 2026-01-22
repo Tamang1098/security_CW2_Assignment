@@ -36,10 +36,10 @@ const ProductDetail = () => {
 
   useEffect(() => {
     fetchProduct();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [id]);
 
-  // Listen for register modal open event (from Buy Now button)
+
   useEffect(() => {
     const handleOpenRegister = () => {
       setShowRegisterModal(true);
@@ -49,22 +49,22 @@ const ProductDetail = () => {
     return () => window.removeEventListener('openRegisterModal', handleOpenRegister);
   }, []);
 
-  // Monitor payment modal - close it if user becomes unauthenticated
+
   useEffect(() => {
     if (showPaymentModal && (!isAuthenticated || !user || user.role === 'admin')) {
-      // User is not authenticated or is admin - close payment modal
+
       setShowPaymentModal(false);
     }
   }, [showPaymentModal, isAuthenticated, user]);
 
-  // After login, continue with Buy Now flow
+
   useEffect(() => {
-    // Only proceed if user is authenticated, has pending Buy Now, and no modals are open
+
     if (isAuthenticated && user && user.role !== 'admin' && pendingBuyNow && !showLoginModal && !showRegisterModal) {
-      // Small delay to ensure modals are closed, then open payment modal
+
       const timer = setTimeout(() => {
         setPendingBuyNow(false);
-        // Double check authentication before opening payment modal
+
         if (isAuthenticated && user && user.role !== 'admin') {
           setShowPaymentModal(true);
         } else {
@@ -76,33 +76,33 @@ const ProductDetail = () => {
   }, [isAuthenticated, user, pendingBuyNow, showLoginModal, showRegisterModal]);
 
   useEffect(() => {
-    // Reset quantity to 1 when product changes
+
     if (product) {
       setQuantity(1);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [product?._id]);
 
   useEffect(() => {
-    // Ensure quantity doesn't exceed available stock
+
     if (product && quantity > (product?.stock || 0)) {
       setQuantity(Math.max(1, product?.stock || 0));
     }
   }, [product, quantity]);
 
   useEffect(() => {
-    // Listen for product updates from admin or when reviews are added/deleted
+
     const handleProductUpdate = () => {
       console.log('Product update detected, refreshing product details...');
       fetchProduct();
     };
 
-    // Listen for window events (same tab/window)
+
     window.addEventListener('productUpdated', handleProductUpdate);
     window.addEventListener('adminDataUpdated', handleProductUpdate);
     window.addEventListener('reviewUpdated', handleProductUpdate);
 
-    // Listen for product-specific updates
+
     const handleProductSpecificUpdate = (e) => {
       const updatedProductId = e.detail?.productId || e.newValue;
       if (updatedProductId === id) {
@@ -111,22 +111,22 @@ const ProductDetail = () => {
     };
     window.addEventListener('productUpdatedId', handleProductSpecificUpdate);
 
-    // Listen for localStorage changes (cross-tab communication)
+
     const handleStorageChange = (e) => {
       if (e.key === 'productUpdated' || e.key === 'adminDataUpdated' || e.key === 'reviewUpdated') {
         handleProductUpdate();
       }
-      // Check if a specific product was updated
+
       if (e.key === 'productUpdatedId' && e.newValue === id) {
         handleProductUpdate();
       }
     };
     window.addEventListener('storage', handleStorageChange);
 
-    // Poll for changes when page is visible (backup method - checks every 5 seconds)
+
     let pollInterval;
     const startPolling = () => {
-      // Poll every 5 seconds when page is visible
+
       pollInterval = setInterval(() => {
         if (!document.hidden) {
           fetchProduct();
@@ -134,7 +134,7 @@ const ProductDetail = () => {
       }, 5000);
     };
 
-    // Start polling when page becomes visible
+
     if (!document.hidden) {
       startPolling();
     }
@@ -143,13 +143,13 @@ const ProductDetail = () => {
       if (document.hidden) {
         clearInterval(pollInterval);
       } else {
-        // Refresh immediately when page becomes visible (user switches back to tab)
+
         handleProductUpdate();
         startPolling();
       }
     };
 
-    // Also refresh when window gets focus
+
     const handleWindowFocus = () => {
       handleProductUpdate();
     };
@@ -167,15 +167,15 @@ const ProductDetail = () => {
       window.removeEventListener('focus', handleWindowFocus);
       clearInterval(pollInterval);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]); // Re-run when product ID changes
+
+  }, [id]);
 
   const fetchProduct = async () => {
     try {
       const res = await axios.get(`https://localhost:5000/api/products/${id}`);
       setProduct(res.data);
       setLoading(false);
-      // Fetch related products
+
       fetchRelatedProducts();
     } catch (error) {
       console.error('Error fetching product:', error);
@@ -193,29 +193,29 @@ const ProductDetail = () => {
   };
 
   const handleBuyNow = () => {
-    // Strict check: user must be authenticated and not admin
+
     if (!isAuthenticated || !user || user.role === 'admin') {
-      // Open register modal first
+
       setShowRegisterModal(true);
       setPendingBuyNow(true);
       return;
     }
-    // Check size selection
-    // Check size selection
+
+
     const needsSize = (product.sizes && product.sizes.length > 0) ||
-      (product.category && (product.category.toLowerCase().includes('jersey') || product.category.toLowerCase().includes('boot'))); // Simplified check
+      (product.category && (product.category.toLowerCase().includes('jersey') || product.category.toLowerCase().includes('boot')));
 
     if (needsSize && !selectedSize) {
       alert(t('pleaseSelectSize') || 'Please select a size');
       return;
     }
 
-    // Only show payment modal if user is properly authenticated
+
     setShowPaymentModal(true);
   };
 
   const handlePaymentMethodSelect = async (method) => {
-    // Double check authentication before proceeding
+
     if (!isAuthenticated || !user || user.role === 'admin') {
       setShowPaymentModal(false);
       setShowRegisterModal(true);
@@ -227,7 +227,7 @@ const ProductDetail = () => {
     setProcessing(true);
 
     try {
-      // Create order directly
+
       const orderData = {
         items: [{
           product: product._id,
@@ -254,7 +254,7 @@ const ProductDetail = () => {
       const orderRes = await axios.post('https://localhost:5000/api/orders', orderData);
       const { order, payment } = orderRes.data;
 
-      // Dispatch events for updates
+
       window.dispatchEvent(new Event('newOrderCreated'));
       window.dispatchEvent(new Event('productUpdated'));
       window.dispatchEvent(new CustomEvent('productUpdatedId', { detail: { productId: product._id } }));
@@ -270,12 +270,12 @@ const ProductDetail = () => {
       }, 100);
 
       if (method === 'online') {
-        // Online payment - show QR code modal
+
         setPaymentId(payment._id);
         setOrderId(order._id);
         setShowQRModal(true);
       } else {
-        // COD - show success modal (like login modal style)
+
         setOrderNumber(order.orderNumber);
         setShowSuccessModal(true);
       }
@@ -293,17 +293,17 @@ const ProductDetail = () => {
     if (typeof imagePath !== 'string') return imagePath;
 
     let path = imagePath;
-    // Force HTTPS for localhost to avoid mixed content blocks
+
     if (path.startsWith('http://localhost:5000')) {
       path = path.replace('http://localhost:5000', 'https://localhost:5000');
     }
 
-    // If it's a full URL, return it
+
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
     }
 
-    // If it's a relative path, prepend backend URL
+
     if (path.startsWith('/uploads/')) {
       return `https://localhost:5000${path}`;
     }
@@ -311,7 +311,7 @@ const ProductDetail = () => {
       return `https://localhost:5000/${path}`;
     }
 
-    // Handle just filename
+
     if (!path.includes('://') && !path.startsWith('/')) {
       return `https://localhost:5000/uploads/${path}`;
     }
@@ -322,28 +322,28 @@ const ProductDetail = () => {
   const getProductImages = () => {
     if (!product) return [];
     const images = [];
-    // Add main image
+
     if (product.image) {
       images.push(product.image);
     }
-    // Add additional images (filter out duplicates of main image)
+
     if (product.images && Array.isArray(product.images) && product.images.length > 0) {
-      // Filter out null, undefined, empty strings, and duplicates of main image
+
       const additionalImages = product.images
         .filter(img => img && img.trim() !== '' && img !== product.image);
       images.push(...additionalImages);
     }
-    // Return all images or placeholder
+
     return images.length > 0 ? images : ['https://via.placeholder.com/500'];
   };
 
-  // Helper to determine sizes if not explicitly set
+
   const getDisplaySizes = () => {
     if (product.sizes && product.sizes.length > 0) {
       return product.sizes;
     }
 
-    // Auto-generate sizes based on category or name
+
     const categoryLower = (product.category || '').toLowerCase();
     const nameLower = (product.name || '').toLowerCase();
 
@@ -364,7 +364,7 @@ const ProductDetail = () => {
 
   const totalPrice = product ? (product.price * quantity) : 0;
   const availableStock = product?.stock || 0;
-  const remainingStock = availableStock - quantity; // Stock after current quantity selection
+  const remainingStock = availableStock - quantity;
 
   if (loading) {
     return <div className="loading-container">{t('loadingProduct')}</div>;
@@ -402,34 +402,34 @@ const ProductDetail = () => {
                       const img = e.currentTarget;
                       const rect = img.getBoundingClientRect();
 
-                      // Calculate cursor position relative to image
+
                       let x = e.clientX - rect.left;
                       let y = e.clientY - rect.top;
 
-                      // Prevent lens from going outside image bounds
+
                       const lensWidth = lens.offsetWidth / 2;
                       const lensHeight = lens.offsetHeight / 2;
 
                       x = Math.max(lensWidth, Math.min(x, rect.width - lensWidth));
                       y = Math.max(lensHeight, Math.min(y, rect.height - lensHeight));
 
-                      // Position the lens
+
                       lens.style.left = (x - lensWidth) + 'px';
                       lens.style.top = (y - lensHeight) + 'px';
 
-                      // Show lens and result
+
                       lens.style.display = 'block';
                       result.style.display = 'block';
 
-                      // Calculate zoom with reduced magnification
-                      const zoomFactor = 2; // Can adjust this if needed
 
-                      // Set background position for zoomed image
+                      const zoomFactor = 2;
+
+
                       result.style.backgroundImage = `url('${img.src}')`;
                       result.style.backgroundSize = (img.width * zoomFactor) + 'px ' + (img.height * zoomFactor) + 'px';
 
-                      // Calculate position
-                      // The background moves in the opposite direction of the lens
+
+
                       const bgX = (x - lensWidth) * zoomFactor;
                       const bgY = (y - lensHeight) * zoomFactor;
 
@@ -583,12 +583,12 @@ const ProductDetail = () => {
         isOpen={showLoginModal}
         skipNavigation={true}
         onLoginSuccess={(user) => {
-          // Don't navigate - stay on product detail page for Buy Now flow
-          // The useEffect will detect authentication and open payment modal
+
+
         }}
         onClose={() => {
           setShowLoginModal(false);
-          // If user cancels login after registering, cancel pending Buy Now
+
           if (!isAuthenticated) {
             setPendingBuyNow(false);
           }
@@ -604,17 +604,17 @@ const ProductDetail = () => {
         isOpen={showRegisterModal}
         onClose={() => {
           setShowRegisterModal(false);
-          // If user cancels registration, cancel pending Buy Now
+
           if (!isAuthenticated) {
             setPendingBuyNow(false);
           }
         }}
         onSwitchToLogin={() => {
-          // After registration, switch to login modal
-          // Close register modal first
+
+
           setShowRegisterModal(false);
-          // Open login modal immediately after register modal closes
-          // Use requestAnimationFrame to ensure DOM update happens first
+
+
           requestAnimationFrame(() => {
             setShowLoginModal(true);
           });

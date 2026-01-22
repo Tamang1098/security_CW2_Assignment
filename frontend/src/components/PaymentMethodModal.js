@@ -63,4 +63,3 @@ const PaymentMethodModal = ({ isOpen, onClose, onSelectMethod, totalAmount }) =>
 };
 
 export default PaymentMethodModal;
-

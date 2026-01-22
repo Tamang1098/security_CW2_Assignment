@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -17,16 +17,32 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [emailValid, setEmailValid] = useState(null);
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  useEffect(() => {
+    if (formData.email) {
+      setEmailValid(validateEmail(formData.email));
+    } else {
+      setEmailValid(null);
+    }
+  }, [formData.email]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Mobile number validation: only numbers, max 10 digits
+
     if (name === 'phone') {
-      // Allow only numbers
+
       const numericValue = value.replace(/[^0-9]/g, '');
 
-      // Limit to 10 digits
+
       if (numericValue.length <= 10) {
         setFormData({
           ...formData,
@@ -51,8 +67,9 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError(t('passwordMinLength'));
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('Password must be at least 8 characters long and meet all complexity requirements (Uppercase, Lowercase, Number, Special Character)');
       return;
     }
 
@@ -63,37 +80,37 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
 
     setLoading(true);
 
-    // Start artificial delay timer (1.5s min)
+
     const delayTimer = new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Perform registration
+
     const result = await register(formData.name, formData.email, formData.password, formData.phone);
 
-    // Show toast immediately if successful
+
     if (result.success) {
       showToast('Register Successful', 'success');
     }
 
-    // Wait for the remaining delay time
+
     await delayTimer;
 
     setLoading(false);
 
     if (result.success) {
-      // Dispatch event for new user creation (for admin panel)
+
       window.dispatchEvent(new Event('newUserCreated'));
       localStorage.setItem('newUserCreated', Date.now().toString());
       setTimeout(() => localStorage.removeItem('newUserCreated'), 100);
 
       setFormData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
-      // Toast already shown
 
-      // Switch to login modal - this will handle closing register modal and opening login modal
+
+
       if (onSwitchToLogin) {
-        // Call onSwitchToLogin immediately - the parent component will handle timing
+
         onSwitchToLogin();
       } else {
-        // If no onSwitchToLogin callback, just close the modal
+
         onClose();
       }
     } else {
@@ -108,7 +125,7 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose}>×</button>
         <h2>{t('createAccount')}</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="form-group">
             <label>{t('name')}</label>
             <input
@@ -129,6 +146,7 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
               onChange={handleChange}
               required
               placeholder={t('enterEmail')}
+              autoComplete="off"
             />
           </div>
           <div className="form-group">
@@ -146,14 +164,47 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
           </div>
           <div className="form-group">
             <label>{t('password')}</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              placeholder={t('enterPassword')}
-            />
+            <div className="password-input-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                placeholder={t('enterPassword')}
+                onMouseEnter={() => setShowHint(true)}
+                onMouseLeave={() => setShowHint(false)}
+                onFocus={() => setShowHint(true)}
+                onBlur={() => setShowHint(false)}
+                autoComplete="new-password"
+              />
+              <span className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? "👁️‍🗨️" : "👁️"}
+              </span>
+            </div>
+
+            {showHint && (
+              <div className="password-hint-tooltip">
+                Hint: 1 Uppercase, 1 Special Sign, and 8+ Characters
+              </div>
+            )}
+
+            {formData.password && (
+              <div className="password-requirements">
+                <p className={formData.password.length >= 8 ? 'met' : 'unmet'}>
+                  {formData.password.length >= 8 ? '✓' : '○'} 8+ Characters
+                </p>
+                <p className={/[A-Z]/.test(formData.password) ? 'met' : 'unmet'}>
+                  {/[A-Z]/.test(formData.password) ? '✓' : '○'} Uppercase Letter
+                </p>
+                <p className={/[@$!%*?&]/.test(formData.password) ? 'met' : 'unmet'}>
+                  {/[@$!%*?&]/.test(formData.password) ? '✓' : '○'} Special Character (@$!%*?&)
+                </p>
+                <p className={/[0-9]/.test(formData.password) ? 'met' : 'unmet'}>
+                  {/[0-9]/.test(formData.password) ? '✓' : '○'} Number
+                </p>
+              </div>
+            )}
           </div>
           <div className="form-group">
             <label>{t('confirmPassword')}</label>
@@ -190,4 +241,3 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
 };
 
 export default RegisterModal;
-

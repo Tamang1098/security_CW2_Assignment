@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { LanguageProvider } from './context/LanguageContext';
-import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import ProtectedRoute from './components/ProtectedRoute';
 import AdminNavbar from './components/admin/AdminNavbar';
 import UserNavbar from './components/user/UserNavbar';
 import UserWelcome from './components/UserWelcome';
@@ -96,4 +96,3 @@ function App() {
 }
 
 export default App;
-

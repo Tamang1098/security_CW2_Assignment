@@ -25,7 +25,7 @@ const LandingPage = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Banner slides data
+
   const bannerSlides = [
 
     {
@@ -42,10 +42,10 @@ const LandingPage = () => {
     }
   ];
 
-  // Don't redirect admin - let them browse user pages if they want
-  // Only redirect happens on fresh admin login from AdminLogin component
 
-  // Auto-slide banner
+
+
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % 2);
@@ -64,38 +64,38 @@ const LandingPage = () => {
   }, [selectedCategory]);
 
   useEffect(() => {
-    // Reset to page 1 when category or productsPerPage changes
+
     setCurrentPage(1);
   }, [selectedCategory, productsPerPage]);
 
   useEffect(() => {
-    // Filter and paginate products when category, productsPerPage, or currentPage changes
+
     filterAndPaginateProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [selectedCategory, productsPerPage, allProducts, currentPage]);
 
   useEffect(() => {
-    // Listen for updates from admin (products, categories, users)
+
     const handleProductUpdate = () => {
       console.log('Product update detected, refreshing...');
       fetchProducts();
       fetchFeaturedProducts();
-      fetchCategories(); // Refresh categories in case they changed
+      fetchCategories();
     };
 
     const handleCategoryUpdate = () => {
       console.log('Category update detected, refreshing...');
       fetchCategories();
-      fetchProducts(); // Refresh products in case category changes affected them
+      fetchProducts();
       fetchFeaturedProducts();
     };
 
-    // Listen for window events (same tab/window)
+
     window.addEventListener('productUpdated', handleProductUpdate);
     window.addEventListener('categoryUpdated', handleCategoryUpdate);
     window.addEventListener('adminDataUpdated', handleProductUpdate);
 
-    // Listen for localStorage changes (cross-tab communication)
+
     const handleStorageChange = (e) => {
       if (e.key === 'productUpdated' || e.key === 'categoryUpdated' || e.key === 'adminDataUpdated') {
         handleProductUpdate();
@@ -114,7 +114,7 @@ const LandingPage = () => {
   const fetchCategories = async () => {
     try {
       const res = await axios.get('https://localhost:5000/api/products/categories/list');
-      // Failsafe: Sort by createdAt desc on frontend
+
       const sortedCategories = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setCategories(sortedCategories);
     } catch (error) {
@@ -125,10 +125,10 @@ const LandingPage = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Request all products by setting a high limit
+
       const url = 'https://localhost:5000/api/products?limit=1000';
       const res = await axios.get(url);
-      // Handle both response formats: {products: [...]} or [...]
+
       const productsList = Array.isArray(res.data) ? res.data : (res.data.products || []);
       setAllProducts(productsList);
       setLoading(false);
@@ -141,13 +141,13 @@ const LandingPage = () => {
   const filterAndPaginateProducts = () => {
     let filtered = [...allProducts];
 
-    // Filter by category
+
     if (selectedCategory !== 'all') {
       filtered = filtered.filter(product => product.category === selectedCategory);
     }
 
-    // Calculate pagination
-    // eslint-disable-next-line no-unused-vars
+
+
     const totalPages = Math.ceil(filtered.length / productsPerPage);
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
@@ -366,4 +366,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-

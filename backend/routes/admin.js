@@ -7,7 +7,7 @@ const Order = require('../models/Order');
 const { adminAuth } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 
-// Add product (Admin only)
+
 router.post('/products', adminAuth, upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'images', maxCount: 5 }
@@ -21,18 +21,18 @@ router.post('/products', adminAuth, upload.fields([
       featured
     } = req.body;
 
-    // Validate required fields
+
     if (!name || !price || !category) {
       return res.status(400).json({ message: 'Name, price, and category are required' });
     }
 
-    // Get main image URL - either from uploaded file or from body
+
     let imageUrl = 'https://via.placeholder.com/300';
     if (req.files && req.files['image'] && req.files['image'][0]) {
-      // Use uploaded file - return relative path
+
       imageUrl = `/uploads/${req.files['image'][0].filename}`;
     } else if (req.body.image) {
-      // Use provided URL
+
       imageUrl = req.body.image;
     }
 
@@ -42,7 +42,7 @@ router.post('/products', adminAuth, upload.fields([
         additionalImages.push(`/uploads/${file.filename}`);
       });
     }
-    // Also check for image URLs in body (comma-separated or array)
+
     if (req.body.images) {
       const imageUrls = Array.isArray(req.body.images)
         ? req.body.images
@@ -52,7 +52,7 @@ router.post('/products', adminAuth, upload.fields([
 
     const product = new Product({
       name,
-      description: req.body.description || '', // Optional description
+      description: req.body.description || '',
       price: parseFloat(price),
       image: imageUrl,
       images: additionalImages,
@@ -68,7 +68,7 @@ router.post('/products', adminAuth, upload.fields([
   } catch (error) {
     console.error('Error creating product in MongoDB:', error);
     console.error('Error creating product in MongoDB:', error);
-    // Log validation errors specifically
+
     if (error.name === 'ValidationError') {
       const validationErrors = Object.values(error.errors).map(err => err.message);
       console.error('Validation Errors:', validationErrors);
@@ -78,7 +78,7 @@ router.post('/products', adminAuth, upload.fields([
   }
 });
 
-// Update product (Admin only)
+
 router.put('/products/:id', adminAuth, upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'images', maxCount: 5 }
@@ -94,7 +94,7 @@ router.put('/products/:id', adminAuth, upload.fields([
 
     const updateData = {
       name,
-      description: req.body.description || '', // Optional description
+      description: req.body.description || '',
       price: parseFloat(price),
       category,
       stock: parseInt(stock) || 0,
@@ -102,22 +102,22 @@ router.put('/products/:id', adminAuth, upload.fields([
       featured: featured === 'true' || featured === true
     };
 
-    // Update main image if new file uploaded
+
     if (req.files && req.files['image'] && req.files['image'][0]) {
       updateData.image = `/uploads/${req.files['image'][0].filename}`;
     } else if (req.body.image) {
       updateData.image = req.body.image;
     }
 
-    // Update additional images - merge existing URLs with new files
+
     const newImageFiles = req.files && req.files['images'] ? req.files['images'] : [];
-    // Handle existingImages from FormData (could be array or single value)
+
     let existingImageUrls = [];
     if (req.body.existingImages) {
       if (Array.isArray(req.body.existingImages)) {
         existingImageUrls = req.body.existingImages;
       } else if (typeof req.body.existingImages === 'string') {
-        // If it's a string, try to parse as JSON array or treat as single value
+
         try {
           existingImageUrls = JSON.parse(req.body.existingImages);
         } catch {
@@ -127,19 +127,19 @@ router.put('/products/:id', adminAuth, upload.fields([
     }
 
     if (newImageFiles.length > 0 || existingImageUrls.length > 0) {
-      // Map new file uploads to URLs
+
       const newImageUrls = newImageFiles.map(file =>
         `/uploads/${file.filename}`
       );
 
-      // Combine existing URLs with new ones, avoiding duplicates
+
       const allImages = [...existingImageUrls, ...newImageUrls];
-      // Remove duplicates based on URL
+
       updateData.images = Array.from(new Set(allImages));
     } else if (req.body.images !== undefined) {
-      // If images are explicitly provided in body (but no existingImages), use them
+
       if (req.body.images === '' || req.body.images === null) {
-        // Empty string or null means clear all additional images
+
         updateData.images = [];
       } else {
         const imageUrls = Array.isArray(req.body.images)
@@ -148,7 +148,7 @@ router.put('/products/:id', adminAuth, upload.fields([
         updateData.images = imageUrls;
       }
     }
-    // If neither files nor body.images/existingImages is provided, keep existing images (don't update this field)
+
 
     const product = await Product.findByIdAndUpdate(
       req.params.id,
@@ -169,7 +169,7 @@ router.put('/products/:id', adminAuth, upload.fields([
   }
 });
 
-// Delete product (Admin only)
+
 router.delete('/products/:id', adminAuth, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
@@ -184,7 +184,7 @@ router.delete('/products/:id', adminAuth, async (req, res) => {
   }
 });
 
-// Get all products (Admin - includes inactive)
+
 router.get('/products', adminAuth, async (req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
@@ -194,9 +194,9 @@ router.get('/products', adminAuth, async (req, res) => {
   }
 });
 
-// Category Management Routes
 
-// Add category (Admin only)
+
+
 router.post('/categories', adminAuth, upload.single('image'), async (req, res) => {
   try {
     const { name } = req.body;
@@ -223,7 +223,7 @@ router.post('/categories', adminAuth, upload.single('image'), async (req, res) =
   }
 });
 
-// Get all categories (Admin)
+
 router.get('/categories', adminAuth, async (req, res) => {
   try {
     const categories = await Category.find().sort({ createdAt: -1 });
@@ -233,13 +233,13 @@ router.get('/categories', adminAuth, async (req, res) => {
   }
 });
 
-// Update category (Admin only)
+
 router.put('/categories/:id', adminAuth, upload.single('image'), async (req, res) => {
   try {
     const { name } = req.body;
     const updateData = { name };
 
-    // Update image if new file uploaded
+
     if (req.file) {
       updateData.image = `/uploads/${req.file.filename}`;
     }
@@ -262,7 +262,7 @@ router.put('/categories/:id', adminAuth, upload.single('image'), async (req, res
   }
 });
 
-// Delete category (Admin only)
+
 router.delete('/categories/:id', adminAuth, async (req, res) => {
   try {
     const category = await Category.findByIdAndDelete(req.params.id);
@@ -277,7 +277,7 @@ router.delete('/categories/:id', adminAuth, async (req, res) => {
   }
 });
 
-// Get all users (Admin only)
+
 router.get('/users', adminAuth, async (req, res) => {
   try {
     const users = await User.find().select('-password').sort({ createdAt: -1 });
@@ -287,12 +287,12 @@ router.get('/users', adminAuth, async (req, res) => {
   }
 });
 
-// Delete user (Admin only)
+
 router.delete('/users/:id', adminAuth, async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Prevent admin from deleting themselves
+
     if (req.user.id === userId) {
       return res.status(400).json({ message: 'You cannot delete your own account' });
     }
@@ -309,7 +309,7 @@ router.delete('/users/:id', adminAuth, async (req, res) => {
   }
 });
 
-// Get all orders (Admin only)
+
 router.get('/orders', adminAuth, async (req, res) => {
   try {
     const orders = await Order.find()
@@ -321,10 +321,10 @@ router.get('/orders', adminAuth, async (req, res) => {
   }
 });
 
-// Notifications
+
 const Notification = require('../models/Notification');
 
-// Get notifications (Admin only - notifications without user field)
+
 router.get('/notifications', adminAuth, async (req, res) => {
   try {
     const notifications = await Notification.find({ user: null })
@@ -336,7 +336,7 @@ router.get('/notifications', adminAuth, async (req, res) => {
   }
 });
 
-// Mark notification as read
+
 router.put('/notifications/:id/read', adminAuth, async (req, res) => {
   try {
     const notification = await Notification.findByIdAndUpdate(
@@ -350,7 +350,7 @@ router.put('/notifications/:id/read', adminAuth, async (req, res) => {
   }
 });
 
-// Delete notification
+
 router.delete('/notifications/:id', adminAuth, async (req, res) => {
   try {
     const notification = await Notification.findByIdAndDelete(req.params.id);
@@ -368,4 +368,3 @@ router.delete('/notifications/:id', adminAuth, async (req, res) => {
 });
 
 module.exports = router;
-

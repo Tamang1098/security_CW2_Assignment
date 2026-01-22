@@ -4,7 +4,7 @@ const Category = require('./models/Category');
 
 const cleanPath = (path) => {
     if (!path || typeof path !== 'string') return path;
-    // Remove both http and https localhost URLs, keeping only relative part
+
     return path.replace('http://localhost:5000', '').replace('https://localhost:5000', '');
 };
 

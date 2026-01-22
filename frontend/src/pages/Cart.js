@@ -19,7 +19,7 @@ const Cart = () => {
     }
     fetchCart();
 
-    // Listen for cart updates
+
     window.addEventListener('cartUpdated', fetchCart);
     return () => window.removeEventListener('cartUpdated', fetchCart);
   }, [isAuthenticated, navigate]);
@@ -161,4 +161,3 @@ const Cart = () => {
 };
 
 export default Cart;
-

@@ -25,7 +25,7 @@ const sendEmail = async (options) => {
     } catch (error) {
         console.error(`[Email Service] ERROR: Failed to send email.`);
         console.error(error);
-        throw error; // Re-throw so auth.js catches it
+        throw error;
     }
 };
 

@@ -573,7 +573,7 @@
   border-color: #2E7D32;
 }
 
-/* Additional Images Preview Styles */
+
 .additional-images-preview {
   margin-top: 1rem;
 }
@@ -637,7 +637,7 @@
   transform: scale(1.1);
 }
 
-/* Dashboard Card Variants */
+
 .revenue-card {
   background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
   box-shadow: 0 4px 16px rgba(17, 153, 142, 0.3);
@@ -648,7 +648,7 @@
   box-shadow: 0 4px 16px rgba(255, 94, 98, 0.3);
 }
 
-/* Low Stock Alerts */
+
 .low-stock-section {
   background: white;
   padding: 1.5rem;
@@ -726,7 +726,7 @@
   transition: all 0.2s;
 }
 
-/* Search and Filter Styles */
+
 .filter-group {
   display: flex;
   align-items: center;

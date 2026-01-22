@@ -28,7 +28,7 @@ const AdminLogin = () => {
 
     let result;
     if (!showOtpInput) {
-      // Step 1: Login
+
       result = await login(formData.email, formData.password);
 
       if (result.otpRequired) {
@@ -37,7 +37,7 @@ const AdminLogin = () => {
         return;
       }
     } else {
-      // Step 2: Verify OTP
+
       result = await verifyOtp(formData.email, otp);
     }
 
@@ -63,7 +63,7 @@ const AdminLogin = () => {
             <p>Access the admin dashboard</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="admin-login-form">
+          <form onSubmit={handleSubmit} className="admin-login-form" autoComplete="off">
             {!showOtpInput ? (
               <>
                 <div className="form-group">
@@ -75,6 +75,7 @@ const AdminLogin = () => {
                     onChange={handleChange}
                     required
                     placeholder="Enter admin email"
+                    autoComplete="off"
                   />
                 </div>
                 <div className="form-group">
@@ -86,6 +87,7 @@ const AdminLogin = () => {
                     onChange={handleChange}
                     required
                     placeholder="Enter admin password"
+                    autoComplete="new-password"
                   />
                 </div>
               </>
@@ -129,4 +131,3 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
-

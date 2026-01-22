@@ -86,7 +86,7 @@ const orderSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Generate order number before saving
+
 orderSchema.pre('save', async function (next) {
   if (!this.isNew || this.orderNumber) {
     return next();
@@ -113,11 +113,10 @@ orderSchema.pre('save', async function (next) {
     this.orderNumber = orderNumber || `ORD-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     next();
   } catch (error) {
-    // Fallback order number if there's an error
+
     this.orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     next();
   }
 });
 
 module.exports = mongoose.model('Order', orderSchema);
-

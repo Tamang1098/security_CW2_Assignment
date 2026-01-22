@@ -4,7 +4,7 @@ const User = require('../models/User');
 const Product = require('../models/Product');
 const { auth } = require('../middleware/auth');
 
-// Get cart
+
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate('cart.product');
@@ -14,7 +14,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// Add to cart
+
 router.post('/add', auth, async (req, res) => {
   try {
     const { productId, quantity = 1, size } = req.body;
@@ -43,7 +43,7 @@ router.post('/add', auth, async (req, res) => {
   }
 });
 
-// Update cart item quantity
+
 router.put('/update/:itemId', auth, async (req, res) => {
   try {
     const { quantity } = req.body;
@@ -68,7 +68,7 @@ router.put('/update/:itemId', auth, async (req, res) => {
   }
 });
 
-// Remove from cart
+
 router.delete('/remove/:itemId', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -81,7 +81,7 @@ router.delete('/remove/:itemId', auth, async (req, res) => {
   }
 });
 
-// Clear cart
+
 router.delete('/clear', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -94,4 +94,3 @@ router.delete('/clear', auth, async (req, res) => {
 });
 
 module.exports = router;
-

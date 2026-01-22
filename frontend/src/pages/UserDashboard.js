@@ -74,7 +74,7 @@ const UserDashboard = () => {
       });
 
       setSuccess('Profile updated successfully!');
-      // Refresh user data
+
       window.location.reload();
     } catch (error) {
       setError(error.response?.data?.message || 'Error updating profile');
@@ -251,7 +251,7 @@ const UserDashboard = () => {
               <div className="category-row">
                 <div className="products-scroller">
                   {categories.map(category => {
-                    // Find the first product for this category
+
                     const product = products.find(p => p.category === category.name);
 
                     if (product) {
@@ -262,10 +262,10 @@ const UserDashboard = () => {
                         </div>
                       );
                     } else {
-                      // Fallback if no product exists for category - maybe show category placeholder?
-                      // User specifically asked for "product", so skip if none? 
-                      // Or show a placeholder card. Let's show a placeholder linking to category filter if possible, 
-                      // but for now let's just skip or show nothing to keep it clean as per "show product" request.
+
+
+
+
                       return null;
                     }
                   })}
@@ -280,4 +280,3 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
-

@@ -7,7 +7,7 @@ const RelatedProducts = ({ products, currentProductId }) => {
         return null;
     }
 
-    // Filter out the current product if it somehow got included
+
     const filteredProducts = products.filter(p => p._id !== currentProductId);
 
     if (filteredProducts.length === 0) {

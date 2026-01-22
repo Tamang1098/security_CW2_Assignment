@@ -8,11 +8,10 @@
   position: relative;
   border: 1px solid #f0f0f0;
   border-top: 3px solid #2E7D32;
-  /* border-left: 3px solid #2E7D32;
-   border-right: 3px solid #2E7D32; */
+  
   border-bottom: 3px solid #2E7D32;
   height: 340px;
-  /* Adjusted from 315px to fit the taller image container */
+  
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -28,10 +27,10 @@
   position: relative;
   width: 100%;
   height: 220px;
-  /* Increased height for better visibility */
+  
   overflow: hidden;
   background: white;
-  /* Changed to white for seamless integration */
+  
   flex-shrink: 0;
   border-radius: 12px 12px 0 0;
   display: flex;
@@ -45,7 +44,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Changed from contain to cover for a full, professional look */
+  
   transition: transform 0.5s ease;
   background: white;
   display: block;
@@ -170,7 +169,7 @@
   cursor: not-allowed;
 }
 
-/* Stock Badge */
+
 .product-card::after {
   content: '';
   position: absolute;

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// JWT Secret with fallback
+
 const JWT_SECRET = process.env.JWT_SECRET || 'ecommerce_jwt_secret_key_2024_change_in_production';
 
 const auth = async (req, res, next) => {
@@ -40,4 +40,3 @@ const adminAuth = async (req, res, next) => {
 };
 
 module.exports = { auth, adminAuth };
-

@@ -37,12 +37,12 @@ export const AuthProvider = ({ children }) => {
             setUser(fetchedUser);
           } else {
             console.warn('[AUTH] Invalid user data received during rehydration');
-            // Invalid data from server
+
             logout();
           }
         } catch (error) {
           console.error('[AUTH] Rehydration error:', error.message);
-          // Only logout if it's an authentication error (401/403)
+
           if (error.response?.status === 401 || error.response?.status === 403) {
             console.warn('[AUTH] Token invalid or expired. Logging out.');
             logout();
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  // When token changes (after login/register)
+
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // Validate email format
+
       if (!email || !email.includes('@')) {
         return {
           success: false,
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      // Validate password
+
       if (!password || password.length === 0) {
         return {
           success: false,
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      // Clear old user state and token before login
+
       setUser(null);
       localStorage.removeItem('token');
       delete axios.defaults.headers.common['Authorization'];
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
         password
       });
 
-      // Handle MFA Step
+
       if (res.data.otpRequired) {
         return {
           success: false,
@@ -124,19 +124,19 @@ export const AuthProvider = ({ children }) => {
       console.log('Login successful - user data:', userData);
       console.log('User name:', userData?.name, 'User email:', userData?.email, 'User role:', userData?.role);
 
-      // Set new token and user data
+
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser(userData);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-      // Trigger cart update
+
       window.dispatchEvent(new Event('cartUpdated'));
       return { success: true, user: userData };
     } catch (error) {
-      // Get error message from backend
+
       const errorMessage = error.response?.data?.message || '';
 
-      // Use backend message directly if it's specific (Email is wrong / Password is wrong)
+
       if (errorMessage === 'Email is wrong' || errorMessage === 'Password is wrong') {
         return {
           success: false,
@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      // Handle other errors
+
       let userFriendlyMessage = '';
       if (error.response?.status === 500) {
         userFriendlyMessage = 'Server error. Please try again later.';
@@ -173,12 +173,12 @@ export const AuthProvider = ({ children }) => {
       const { token: newToken, user: userData } = res.data;
       console.log('OTP Verified - user data:', userData);
 
-      // Set new token and user data
+
       localStorage.setItem('token', newToken);
       setToken(newToken);
       setUser(userData);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-      // Trigger cart update
+
       window.dispatchEvent(new Event('cartUpdated'));
 
       return { success: true, user: userData };
@@ -198,7 +198,7 @@ export const AuthProvider = ({ children }) => {
         password,
         phone
       });
-      // Don't auto-login after registration - user needs to login manually
+
       return { success: true };
     } catch (error) {
       return {
@@ -231,7 +231,7 @@ export const AuthProvider = ({ children }) => {
       setUser(fetchedUser);
     } catch (error) {
       console.error('Error refreshing user:', error);
-      // Clear invalid token
+
       localStorage.removeItem('token');
       setToken(null);
       setUser(null);
@@ -252,4 +252,3 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-

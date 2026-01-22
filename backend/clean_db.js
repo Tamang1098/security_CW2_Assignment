@@ -14,7 +14,7 @@ const cleanDatabase = async () => {
         for (const product of products) {
             let updated = false;
 
-            // Clean main image
+
             if (product.image && product.image.includes('http://localhost:5000')) {
                 product.image = product.image.replace('http://localhost:5000', '');
                 updated = true;
@@ -24,7 +24,7 @@ const cleanDatabase = async () => {
                 updated = true;
             }
 
-            // Clean additional images
+
             if (product.images && product.images.length > 0) {
                 product.images = product.images.map(img => {
                     if (img.includes('localhost:5000')) {
@@ -41,7 +41,7 @@ const cleanDatabase = async () => {
             }
         }
 
-        // Clean categories
+
         const categories = await Category.find();
         console.log(`Found ${categories.length} categories to check.`);
 

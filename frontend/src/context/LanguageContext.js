@@ -12,7 +12,7 @@ export const useLanguage = () => {
 
 const translations = {
   en: {
-    // Navbar
+
     welcomeBack: 'Welcome back',
     productPage: 'Product Page',
     myOrders: 'My Orders',
@@ -21,7 +21,7 @@ const translations = {
     register: 'Register',
     adminLogin: 'Admin Login',
 
-    // Landing Page
+
     filterByCategory: 'Filter by Category',
     allCategories: 'All Categories',
     showProducts: 'Show Products',
@@ -34,7 +34,7 @@ const translations = {
     products: 'products',
     adminCanAdd: 'Admin can add products from the admin panel',
 
-    // Login/Register
+
     email: 'Email',
     password: 'Password',
     name: 'Name',
@@ -57,7 +57,7 @@ const translations = {
     registrationSuccess: 'Registration successful! Please login to continue.',
     loginSuccess: 'Login successful! Welcome back!',
 
-    // Product
+
     addToCart: 'Add to Cart',
     buyNow: 'Buy Now',
     viewDetails: 'View Details',
@@ -73,7 +73,7 @@ const translations = {
     productNotFound: 'Product not found',
     loadingProduct: 'Loading product...',
 
-    // Cart
+
     cart: 'Cart',
     yourCart: 'Your Cart',
     items: 'items',
@@ -89,7 +89,7 @@ const translations = {
     errorUpdatingCart: 'Error updating cart',
     errorRemovingItem: 'Error removing item',
 
-    // Checkout
+
     checkout: 'Checkout',
     shippingAddress: 'Shipping Address',
     paymentMethod: 'Payment Method',
@@ -113,7 +113,7 @@ const translations = {
     remarks: 'In Remarks: Please enter your E-mail',
     paymentDone: 'Payment Done',
 
-    // Orders
+
     orderHistory: 'Order History',
     orderNumber: 'Order Number',
     orderDate: 'Order Date',
@@ -146,7 +146,7 @@ const translations = {
     paymentConfirmedAlert: 'Payment confirmed! Your order will be processed.',
     errorConfirmingPayment: 'Error confirming payment',
 
-    // Common
+
     perPage: 'per page',
     loading: 'Loading...',
     error: 'Error',
@@ -199,4 +199,3 @@ export const LanguageProvider = ({ children }) => {
     </LanguageContext.Provider>
   );
 };
-

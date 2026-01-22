@@ -144,7 +144,7 @@
   position: absolute;
   top: 0;
   left: 105%;
-  /* Position to the immediate right of the image container with slight gap */
+  
   width: 400px;
   height: 400px;
   border: 2px solid #e0e0e0;
@@ -155,14 +155,14 @@
   z-index: 1000;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   pointer-events: none;
-  /* Let clicks pass through if needed, though usually it overlays content */
+  
 }
 
-/* Ensure container has relative positioning for the absolute zoom result */
+
 .main-image-container {
-  /* ... existing styles ... */
+  
   position: relative;
-  /* Ensure overflow is visible so zoom result can show outside */
+  
   overflow: visible;
 }
 
@@ -411,7 +411,7 @@
     height: 300px;
   }
 
-  /* Hide zoom result on smaller screens */
+  
   .zoom-result {
     display: none !important;
   }

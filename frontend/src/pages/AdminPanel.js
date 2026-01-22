@@ -38,24 +38,24 @@ const AdminPanel = () => {
   const [categoryImageFile, setCategoryImageFile] = useState(null);
   const [categoryImagePreview, setCategoryImagePreview] = useState('');
 
-  // Handle image URL - convert relative paths to full URLs
+
   const getImageUrl = (imagePath) => {
     if (!imagePath) return 'https://via.placeholder.com/400x300?text=No+Image';
 
     if (typeof imagePath !== 'string') return imagePath;
 
     let path = imagePath;
-    // Force HTTPS for localhost to avoid mixed content blocks
+
     if (path.startsWith('http://localhost:5000')) {
       path = path.replace('http://localhost:5000', 'https://localhost:5000');
     }
 
-    // If it's a full URL, return it
+
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
     }
 
-    // If it's a relative path, prepend backend URL
+
     if (path.startsWith('/uploads/')) {
       return `https://localhost:5000${path}`;
     }
@@ -63,7 +63,7 @@ const AdminPanel = () => {
       return `https://localhost:5000/${path}`;
     }
 
-    // Handle just filename
+
     if (!path.includes('://') && !path.startsWith('/')) {
       return `https://localhost:5000/uploads/${path}`;
     }
@@ -74,35 +74,35 @@ const AdminPanel = () => {
     if (user?.role === 'admin') {
       fetchProducts();
       fetchCategories();
-      fetchOrders(); // Fetch orders immediately for dashboard stats
+      fetchOrders();
       if (activeTab === 'users') {
         fetchUsers();
       }
     }
   }, [user, activeTab]);
 
-  // Listen for new orders and new users, plus poll MongoDB for changes
+
   useEffect(() => {
     if (user?.role === 'admin') {
       const handleNewOrder = () => {
-        // Only refresh orders if we're on the orders tab
+
         if (activeTab === 'orders') {
           fetchOrders();
         }
       };
 
       const handleNewUser = () => {
-        // Only refresh users if we're on the users tab
+
         if (activeTab === 'users') {
           fetchUsers();
         }
       };
 
-      // Listen for window events (same tab/window)
+
       window.addEventListener('newOrderCreated', handleNewOrder);
       window.addEventListener('newUserCreated', handleNewUser);
 
-      // Listen for localStorage changes (cross-tab communication)
+
       const handleStorageChange = (e) => {
         if (e.key === 'newOrderCreated') {
           handleNewOrder();
@@ -112,40 +112,40 @@ const AdminPanel = () => {
       };
       window.addEventListener('storage', handleStorageChange);
 
-      // Poll MongoDB for changes when tab is visible (every 5 seconds)
+
       let pollInterval;
       const startPolling = () => {
-        // Clear any existing interval
+
         clearInterval(pollInterval);
 
         if (!document.hidden) {
-          // Immediately fetch data when starting to poll
+
           if (activeTab === 'orders') {
             fetchOrders();
           } else if (activeTab === 'users') {
             fetchUsers();
           }
 
-          // Then poll every 5 seconds
+
           pollInterval = setInterval(() => {
             if (!document.hidden) {
-              // Poll based on active tab
+
               if (activeTab === 'orders') {
                 fetchOrders();
               } else if (activeTab === 'users') {
                 fetchUsers();
               }
             }
-          }, 5000); // Poll every 5 seconds
+          }, 5000);
         }
       };
 
-      // Start polling if page is visible
+
       if (!document.hidden) {
         startPolling();
       }
 
-      // Handle visibility change
+
       const handleVisibilityChange = () => {
         if (document.hidden) {
           clearInterval(pollInterval);
@@ -181,7 +181,7 @@ const AdminPanel = () => {
   const fetchCategories = async () => {
     try {
       const res = await axios.get('https://localhost:5000/api/admin/categories');
-      // Failsafe: Sort by createdAt desc on frontend
+
       const sortedCategories = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setCategories(sortedCategories);
     } catch (error) {
@@ -204,7 +204,7 @@ const AdminPanel = () => {
         await axios.delete(`https://localhost:5000/api/admin/users/${id}`);
         fetchUsers();
         alert('User deleted successfully!');
-        // Dispatch event for user changes
+
         window.dispatchEvent(new Event('adminDataUpdated'));
       } catch (error) {
         alert(error.response?.data?.message || 'Error deleting user');
@@ -224,7 +224,7 @@ const AdminPanel = () => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      // Create preview
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -236,7 +236,7 @@ const AdminPanel = () => {
   const handleAdditionalImagesChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
-      // Calculate current total using current state values
+
       const currentTotal = existingImageUrls.length + additionalImageFiles.length + files.length;
       const maxAllowed = 5;
 
@@ -244,18 +244,18 @@ const AdminPanel = () => {
         const allowedNew = maxAllowed - (existingImageUrls.length + additionalImageFiles.length);
         if (allowedNew <= 0) {
           alert(`Maximum limit of ${maxAllowed} images reached. Please remove some existing images first.`);
-          e.target.value = ''; // Clear input
+          e.target.value = '';
           return;
         }
         alert(`You can only have up to ${maxAllowed} total images. Only the first ${allowedNew} new image(s) will be added.`);
         const limitedFiles = files.slice(0, allowedNew);
         addImagesToState(limitedFiles);
       } else {
-        // Valid selection - append new files to existing
+
         addImagesToState(files);
       }
     }
-    e.target.value = ''; // Clear input to allow selecting same files again
+    e.target.value = '';
   };
 
   const addImagesToState = async (files) => {
@@ -263,11 +263,11 @@ const AdminPanel = () => {
 
     console.log('Adding files to state:', files.length);
 
-    // Filter out duplicates before adding - use functional update to get latest state
+
     setAdditionalImageFiles((prev) => {
       const newFiles = [...prev];
       files.forEach((newFile) => {
-        // Check for duplicates by file name and size
+
         const isDuplicate = newFiles.some(
           existingFile => existingFile.name === newFile.name && existingFile.size === newFile.size
         );
@@ -281,7 +281,7 @@ const AdminPanel = () => {
       return newFiles;
     });
 
-    // Create previews for all new files using Promise.all to ensure all load before updating
+
     const previewPromises = Array.from(files).map((file) => {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -291,26 +291,26 @@ const AdminPanel = () => {
         };
         reader.onerror = () => {
           console.error('Error reading file:', file.name);
-          resolve(null); // Resolve with null instead of reject to continue processing
+          resolve(null);
         };
         reader.readAsDataURL(file);
       });
     });
 
-    // Wait for all previews to load
+
     try {
       const newPreviews = await Promise.all(previewPromises);
-      // Filter out null values (failed reads) and update state
+
       const validPreviews = newPreviews.filter(preview => preview !== null);
 
       console.log('Valid previews loaded:', validPreviews.length);
 
       if (validPreviews.length > 0) {
         setAdditionalImagePreviews((prev) => {
-          // Combine existing previews with new ones, avoiding duplicates
+
           const combined = [...prev];
           validPreviews.forEach((newPreview) => {
-            // Check if preview already exists (avoid exact duplicates)
+
             if (!combined.includes(newPreview)) {
               combined.push(newPreview);
             }
@@ -325,26 +325,26 @@ const AdminPanel = () => {
   };
 
   const removeAdditionalImage = (index) => {
-    // Check if removing an existing image or a new file
+
     const existingCount = existingImageUrls.length;
     if (index < existingCount) {
-      // Removing an existing image URL
+
       const newExisting = existingImageUrls.filter((_, i) => i !== index);
       const newPreviews = additionalImagePreviews.filter((_, i) => i !== index);
       setExistingImageUrls(newExisting);
       setAdditionalImagePreviews(newPreviews);
     } else {
-      // Removing a newly uploaded file
-      // We need to remove from both files and previews arrays
+
+
       const fileIndex = index - existingCount;
 
-      // Remove from files array
+
       setAdditionalImageFiles((prev) => {
         const newFiles = prev.filter((_, i) => i !== fileIndex);
         return newFiles;
       });
 
-      // Remove from previews array (at the same index position)
+
       setAdditionalImagePreviews((prev) => {
         const newPreviews = prev.filter((_, i) => i !== index);
         return newPreviews;
@@ -357,26 +357,26 @@ const AdminPanel = () => {
     try {
       const submitData = new FormData();
       submitData.append('name', formData.name);
-      submitData.append('description', ''); // Empty description
+      submitData.append('description', '');
       submitData.append('price', formData.price);
       submitData.append('category', formData.category);
       submitData.append('stock', formData.stock);
-      submitData.append('sizes', ''); // Send empty sizes, let frontend handle default sizes based on category
+      submitData.append('sizes', '');
       submitData.append('featured', formData.featured);
 
-      // Add main image file if selected, otherwise use URL
+
       if (imageFile) {
         submitData.append('image', imageFile);
       } else if (formData.image) {
         submitData.append('image', formData.image);
       }
 
-      // Add additional images - include both new files and existing URLs when editing
+
       if (editingProduct && existingImageUrls.length > 0) {
-        // When editing, preserve existing images - send as JSON string
+
         submitData.append('existingImages', JSON.stringify(existingImageUrls));
       }
-      // Add new image files
+
       if (additionalImageFiles.length > 0) {
         additionalImageFiles.forEach((file) => {
           submitData.append('images', file);
@@ -404,13 +404,13 @@ const AdminPanel = () => {
       const productId = editingProduct ? editingProduct._id : null;
       resetForm();
       alert(editingProduct ? 'Product updated!' : 'Product added!');
-      // Dispatch events to refresh products on landing page (same tab)
+
       window.dispatchEvent(new Event('productUpdated'));
       window.dispatchEvent(new Event('adminDataUpdated'));
-      // Trigger localStorage change for cross-tab communication
+
       localStorage.setItem('productUpdated', Date.now().toString());
       localStorage.removeItem('productUpdated');
-      // If editing, also trigger product-specific update for product detail page
+
       if (productId) {
         window.dispatchEvent(new CustomEvent('productUpdatedId', { detail: { productId } }));
         localStorage.setItem('productUpdatedId', productId);
@@ -434,13 +434,13 @@ const AdminPanel = () => {
     });
     setImageFile(null);
     setImagePreview(product.image ? getImageUrl(product.image) : '');
-    // Load existing additional images
+
     if (product.images && product.images.length > 0) {
       const imageUrls = product.images.map(img =>
         img.startsWith('http') ? img : (img.startsWith('/') ? `https://localhost:5000${img}` : img)
       );
       setAdditionalImagePreviews(imageUrls);
-      setExistingImageUrls(imageUrls); // Track existing URLs separately
+      setExistingImageUrls(imageUrls);
     } else {
       setAdditionalImagePreviews([]);
       setExistingImageUrls([]);
@@ -455,10 +455,10 @@ const AdminPanel = () => {
         await axios.delete(`https://localhost:5000/api/admin/products/${id}`);
         fetchProducts();
         alert('Product deleted!');
-        // Dispatch events to refresh products on landing page (same tab)
+
         window.dispatchEvent(new Event('productUpdated'));
         window.dispatchEvent(new Event('adminDataUpdated'));
-        // Trigger localStorage change for cross-tab communication
+
         localStorage.setItem('productUpdated', Date.now().toString());
         localStorage.removeItem('productUpdated');
       } catch (error) {
@@ -534,10 +534,10 @@ const AdminPanel = () => {
       fetchCategories();
       resetCategoryForm();
       alert(editingCategory ? 'Category updated!' : 'Category added!');
-      // Dispatch events to refresh categories on landing page (same tab)
+
       window.dispatchEvent(new Event('categoryUpdated'));
       window.dispatchEvent(new Event('adminDataUpdated'));
-      // Trigger localStorage change for cross-tab communication
+
       localStorage.setItem('categoryUpdated', Date.now().toString());
       localStorage.removeItem('categoryUpdated');
     } catch (error) {
@@ -562,10 +562,10 @@ const AdminPanel = () => {
         await axios.delete(`https://localhost:5000/api/admin/categories/${id}`);
         fetchCategories();
         alert('Category deleted!');
-        // Dispatch events to refresh categories on landing page (same tab)
+
         window.dispatchEvent(new Event('categoryUpdated'));
         window.dispatchEvent(new Event('adminDataUpdated'));
-        // Trigger localStorage change for cross-tab communication
+
         localStorage.setItem('categoryUpdated', Date.now().toString());
         localStorage.removeItem('categoryUpdated');
       } catch (error) {
@@ -605,7 +605,7 @@ const AdminPanel = () => {
       fetchOrders();
       alert('Order status updated!');
 
-      // Dispatch event to update user notifications (for navbar badge)
+
       window.dispatchEvent(new Event('orderStatusUpdated'));
       localStorage.setItem('orderStatusUpdated', Date.now().toString());
       setTimeout(() => localStorage.removeItem('orderStatusUpdated'), 100);
@@ -625,19 +625,19 @@ const AdminPanel = () => {
     }
 
     try {
-      // Update payment status to paid and set order status to processing (backend handles both)
-      // We removed skipNotification=true so the user gets the update!
+
+
       await axios.put(`https://localhost:5000/api/payments/${paymentId}/status`, {
         status: 'paid',
         setOrderStatus: 'processing'
       });
 
-      // Refresh orders to show updated status
+
       await fetchOrders();
 
       alert('Payment Status Updated to "Received". Order is now Processing.');
 
-      // Dispatch events to refresh views
+
       window.dispatchEvent(new Event('paymentVerified'));
       window.dispatchEvent(new Event('orderStatusUpdated'));
     } catch (error) {
@@ -694,7 +694,7 @@ const AdminPanel = () => {
 
   const filteredOrders = orders.filter(o => {
     const matchesStatus = orderStatusFilter === 'all' || o.orderStatus === orderStatusFilter;
-    // Optional: Add search by order ID if needed later
+
     return matchesStatus;
   });
 
@@ -1462,4 +1462,3 @@ const AdminPanel = () => {
 };
 
 export default AdminPanel;
-

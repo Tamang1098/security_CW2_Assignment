@@ -23,7 +23,7 @@ const OrderDetails = () => {
       return;
     }
     fetchOrderDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [id, isAuthenticated, navigate]);
 
   const fetchOrderDetails = async () => {
@@ -250,4 +250,3 @@ const OrderDetails = () => {
 };
 
 export default OrderDetails;
-

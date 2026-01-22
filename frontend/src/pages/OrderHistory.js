@@ -22,43 +22,43 @@ const OrderHistory = () => {
       return;
     }
     fetchOrders();
-    fetchNotifications(false); // Don't show toast on initial load
-    // Poll for notifications and orders every 3 seconds for faster updates
+    fetchNotifications(false);
+
     const interval = setInterval(() => {
-      fetchNotifications(true); // Show toast for new notifications
+      fetchNotifications(true);
       fetchOrders();
     }, 3000);
 
-    // Listen for order status updates from admin - immediate update
+
     const handleOrderStatusUpdate = () => {
       console.log('Order status update event received - fetching orders and notifications');
       fetchOrders();
-      fetchNotifications(true); // Show toast for new notifications
+      fetchNotifications(true);
     };
     window.addEventListener('orderStatusUpdated', handleOrderStatusUpdate);
 
-    // Listen for localStorage events (cross-tab communication) - immediate update
+
     const handleStorageChange = (e) => {
       if (e.key === 'orderStatusUpdated' || e.key === 'paymentVerified' || e.key === 'notificationUpdated') {
         console.log('Storage change detected:', e.key, '- fetching orders and notifications');
         fetchOrders();
-        fetchNotifications(true); // Show toast for new notifications
+        fetchNotifications(true);
       }
     };
     window.addEventListener('storage', handleStorageChange);
 
-    // Listen for notification updates - immediate update
+
     const handleNotificationUpdate = () => {
       console.log('Notification update event received - fetching notifications');
-      fetchNotifications(true); // Show toast for new notifications
+      fetchNotifications(true);
     };
     window.addEventListener('notificationUpdated', handleNotificationUpdate);
 
-    // Listen for payment verification - immediate update
+
     const handlePaymentVerified = () => {
       console.log('Payment verified event received - fetching orders and notifications');
       fetchOrders();
-      fetchNotifications(true); // Show toast for payment success
+      fetchNotifications(true);
     };
     window.addEventListener('paymentVerified', handlePaymentVerified);
 
@@ -69,7 +69,7 @@ const OrderHistory = () => {
       window.removeEventListener('notificationUpdated', handleNotificationUpdate);
       window.removeEventListener('paymentVerified', handlePaymentVerified);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [isAuthenticated, navigate]);
 
   const fetchOrders = async () => {
@@ -94,7 +94,7 @@ const OrderHistory = () => {
       const res = await axios.get('https://localhost:5000/api/auth/notifications');
       const newNotifications = res.data;
 
-      // Check for new payment/order notifications
+
       if (showPaymentToast) {
         const currentNotifications = notificationsRef.current;
         const previousNotificationIds = currentNotifications.length > 0 ? currentNotifications.map(n => n._id) : [];
@@ -104,7 +104,7 @@ const OrderHistory = () => {
           (n.message.includes('Payment') || n.message.includes('processing') || n.message.includes('received'))
         );
 
-        // Show toast for new payment/processing notifications
+
         if (newPaymentNotifications.length > 0) {
           const firstNotification = newPaymentNotifications[0];
           if (firstNotification.message.includes('processing') || firstNotification.message.includes('received')) {
@@ -125,19 +125,19 @@ const OrderHistory = () => {
   const markAsRead = async (notificationId, notificationLink) => {
     try {
       await axios.put(`https://localhost:5000/api/auth/notifications/${notificationId}/read`);
-      // Immediately update notifications to hide the clicked one
+
       setNotifications(prev => prev.map(n =>
         n._id === notificationId ? { ...n, read: true } : n
       ));
       setUnreadCount(prev => Math.max(0, prev - 1));
-      // Fetch fresh notifications and orders to update status
+
       fetchNotifications();
       fetchOrders();
-      // Dispatch event to update navbar badge
+
       window.dispatchEvent(new Event('notificationUpdated'));
       localStorage.setItem('notificationUpdated', Date.now().toString());
       setTimeout(() => localStorage.removeItem('notificationUpdated'), 100);
-      // Don't navigate - just hide the notification and show updated order status below
+
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
@@ -147,12 +147,12 @@ const OrderHistory = () => {
     e.stopPropagation();
     try {
       await axios.delete(`https://localhost:5000/api/auth/notifications/${notificationId}`);
-      // Immediately remove notification from state
+
       setNotifications(prev => prev.filter(n => n._id !== notificationId));
       setUnreadCount(prev => Math.max(0, prev - 1));
-      // Fetch fresh notifications
+
       fetchNotifications();
-      // Dispatch event to update navbar badge
+
       window.dispatchEvent(new Event('notificationUpdated'));
       localStorage.setItem('notificationUpdated', Date.now().toString());
       setTimeout(() => localStorage.removeItem('notificationUpdated'), 100);
@@ -183,7 +183,7 @@ const OrderHistory = () => {
     if (imagePath.startsWith('/uploads/')) {
       return `https://localhost:5000${imagePath}`;
     }
-    // Handle case where imagePath might be just the filename without /uploads/
+
     if (!imagePath.includes('://') && !imagePath.startsWith('/')) {
       return `https://localhost:5000/uploads/${imagePath}`;
     }
@@ -194,7 +194,7 @@ const OrderHistory = () => {
     return <div className="loading-container">{t('loading')} {t('myOrders').toLowerCase()}...</div>;
   }
 
-  // Filter unread notifications (show in red at top)
+
   const unreadNotifications = notifications.filter(n => !n.read);
 
   return (
@@ -341,4 +341,3 @@ const OrderHistory = () => {
 };
 
 export default OrderHistory;
-

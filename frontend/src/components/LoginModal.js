@@ -30,13 +30,13 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Start artificial delay timer (1.5s min)
+
     const delayTimer = new Promise(resolve => setTimeout(resolve, 1500));
     setLoading(true);
 
     let result;
     if (!showOtpInput) {
-      // Step 1: Login
+
       result = await login(formData.email, formData.password);
 
       if (result.otpRequired) {
@@ -47,16 +47,16 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
         return;
       }
     } else {
-      // Step 2: OTP
+
       result = await verifyOtp(formData.email, otp);
     }
 
-    // Show toast immediately if successful
+
     if (result.success) {
       showToast('Login Successful', 'success');
     }
 
-    // Wait for the remaining delay time
+
     await delayTimer;
 
     setLoading(false);
@@ -65,24 +65,24 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
       setFormData({ email: '', password: '' });
       setOtp('');
       setShowOtpInput(false);
-      // Toast already shown
+
       onClose();
 
-      // Call custom onLoginSuccess callback if provided
+
       if (onLoginSuccess) {
         onLoginSuccess(result.user);
-        return; // Don't navigate if custom callback is provided
+        return;
       }
 
-      // Only navigate if skipNavigation is false
+
       if (!skipNavigation) {
-        // Only navigate after successful login - regular users go to product page, admin goes to admin panel
-        // Make sure we're checking the actual logged-in user, not any cached state
+
+
         const loggedInUser = result.user;
         if (loggedInUser?.role === 'admin') {
           navigate('/admin');
         } else {
-          // Regular user - go to home/product page as requested
+
           navigate('/');
         }
       }
@@ -91,7 +91,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
     }
   };
 
-  // Handle close - just close the modal, don't navigate anywhere
+
   const handleClose = () => {
     setFormData({ email: '', password: '' });
     setOtp('');
@@ -101,15 +101,15 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
   };
 
 
-  // Don't show login modal if not requested to open
+
   if (!isOpen) return null;
 
-  // On user pages, treat admin as not logged in (allow login)
-  // On admin pages, if admin is logged in, don't show login form
+
+
   const isAdminOnUserPage = isAuthenticated && user?.role === 'admin' && !location.pathname.startsWith('/admin');
   const shouldShowLogin = !isAuthenticated || isAdminOnUserPage;
 
-  // If user is already authenticated (and not admin on user page), don't show login modal
+
   if (!shouldShowLogin) {
     console.log('LoginModal: User already authenticated, not showing login form');
     return null;
@@ -122,7 +122,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
       <div className="modal-content">
         <button className="modal-close" onClick={handleClose}>×</button>
         <h2>{t('login')}</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           {!showOtpInput ? (
             <>
               <div className="form-group">
@@ -134,6 +134,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
                   onChange={handleChange}
                   required
                   placeholder={t('enterEmail')}
+                  autoComplete="off"
                 />
               </div>
               <div className="form-group">
@@ -145,6 +146,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
                   onChange={handleChange}
                   required
                   placeholder={t('enterPassword')}
+                  autoComplete="new-password"
                 />
               </div>
             </>
@@ -163,7 +165,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
                 style={{ letterSpacing: '2px', fontSize: '1.2rem', textAlign: 'center' }}
               />
               <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
-                
+
               </small>
             </div>
           )}
@@ -203,4 +205,3 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister, skipNavigation = fals
 };
 
 export default LoginModal;
-

@@ -13,11 +13,11 @@ const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   
-  // Check if we're on admin page
+
   const isAdminPage = location.pathname === '/admin';
 
   useEffect(() => {
-    // Listen for custom event to open register modal
+
     const handleOpenRegister = () => {
       setShowRegisterModal(true);
     };
@@ -35,13 +35,13 @@ const Navbar = () => {
         <div className="navbar-menu">
           {isAuthenticated ? (
             user?.role === 'admin' ? (
-              // Admin Navbar - Only Admin Panel and Logout
+
               <>
                 <Link to="/admin" className="navbar-link">Admin Panel</Link>
                 <button onClick={() => { logout(); navigate('/'); }} className="navbar-button">Logout</button>
               </>
             ) : (
-              // User Navbar - Product Page, My Orders, Profile Icon, Logout
+
               <>
                 <Link to="/" className="navbar-link">Product Page</Link>
                 <Link to="/orders" className="navbar-link">My Orders</Link>
@@ -95,4 +95,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

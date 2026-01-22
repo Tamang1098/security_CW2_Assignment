@@ -6,9 +6,9 @@ const LogoutModal = ({ isOpen, onComplete }) => {
 
     useEffect(() => {
         if (isOpen) {
-            // Progress bar animation
-            const duration = 1500; // 1.5 seconds
-            const interval = 20; // Update every 20ms
+
+            const duration = 1500;
+            const interval = 20;
             const increment = (100 / (duration / interval));
 
             const progressTimer = setInterval(() => {
@@ -21,7 +21,7 @@ const LogoutModal = ({ isOpen, onComplete }) => {
                 });
             }, interval);
 
-            // Complete logout after animation
+
             const completeTimer = setTimeout(() => {
                 onComplete();
             }, duration);

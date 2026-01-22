@@ -8,14 +8,14 @@
   transition: background 0.3s;
 }
 
-/* Navbar for landing page and user pages - White background */
+
 .navbar-user {
   background: white;
   color: #333;
   border-bottom: 2px solid #f0f0f0;
 }
 
-/* Navbar for admin page - Football Green background */
+
 .navbar-admin {
   background: #2E7D32;
   color: white;

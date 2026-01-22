@@ -8,9 +8,9 @@ const OrderSuccessModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      // Progress bar animation
-      const duration = 1000; // 1 second
-      const interval = 20; // Update every 20ms
+
+      const duration = 1000;
+      const interval = 20;
       const increment = (100 / (duration / interval));
 
       const progressTimer = setInterval(() => {
@@ -23,7 +23,7 @@ const OrderSuccessModal = ({ isOpen, onClose }) => {
         });
       }, interval);
 
-      // Auto navigate to orders after 2 seconds
+
       const redirectTimer = setTimeout(() => {
         navigate('/orders');
         onClose();

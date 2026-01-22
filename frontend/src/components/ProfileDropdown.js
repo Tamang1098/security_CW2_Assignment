@@ -27,7 +27,7 @@ const ProfileDropdown = ({ user }) => {
     }
   }, [user]);
 
-  // Close dropdown when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showDropdown && !event.target.closest('.profile-dropdown-container')) {
@@ -66,7 +66,7 @@ const ProfileDropdown = ({ user }) => {
         newPassword: '',
         confirmPassword: ''
       });
-      // Refresh user data
+
       window.location.reload();
     } catch (error) {
       setError(error.response?.data?.message || 'Error updating profile');
@@ -234,4 +234,3 @@ const ProfileDropdown = ({ user }) => {
 };
 
 export default ProfileDropdown;
-

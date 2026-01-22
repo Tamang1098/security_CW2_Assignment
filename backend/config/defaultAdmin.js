@@ -6,11 +6,11 @@ const createDefaultAdmin = async () => {
     const adminEmail = 'surajtamang1098@gmail.com';
     const adminPassword = '12345678';
     
-    // Check if admin already exists
+
     const existingAdmin = await User.findOne({ email: adminEmail });
     
     if (!existingAdmin) {
-      // Create default admin
+
       const hashedPassword = await bcrypt.hash(adminPassword, 10);
       
       const admin = new User({
@@ -26,8 +26,8 @@ const createDefaultAdmin = async () => {
       console.log('🔑 Password: 12345678');
       console.log('⚠️  Please change the password after first login!');
     } else {
-      // Update existing admin password to ensure it's correct
-      // Use updateOne to bypass pre-save hook and avoid double hashing
+
+
       const hashedPassword = await bcrypt.hash(adminPassword, 10);
       await User.updateOne(
         { email: adminEmail },
@@ -46,4 +46,3 @@ const createDefaultAdmin = async () => {
 };
 
 module.exports = createDefaultAdmin;
-

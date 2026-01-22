@@ -32,10 +32,10 @@ const ProductReview = ({ product, onReviewAdded }) => {
       setComment('');
       setShowForm(false);
       if (onReviewAdded) onReviewAdded();
-      // Dispatch events to refresh product detail page
+
       window.dispatchEvent(new Event('reviewUpdated'));
       window.dispatchEvent(new CustomEvent('productUpdatedId', { detail: { productId: product._id } }));
-      // Trigger localStorage change for cross-tab communication
+
       localStorage.setItem('reviewUpdated', Date.now().toString());
       localStorage.removeItem('reviewUpdated');
       localStorage.setItem('productUpdatedId', product._id);
@@ -57,10 +57,10 @@ const ProductReview = ({ product, onReviewAdded }) => {
     try {
       await axios.delete(`https://localhost:5000/api/products/${product._id}/reviews/${reviewId}`);
       if (onReviewAdded) onReviewAdded();
-      // Dispatch events to refresh product detail page
+
       window.dispatchEvent(new Event('reviewUpdated'));
       window.dispatchEvent(new CustomEvent('productUpdatedId', { detail: { productId: product._id } }));
-      // Trigger localStorage change for cross-tab communication
+
       localStorage.setItem('reviewUpdated', Date.now().toString());
       localStorage.removeItem('reviewUpdated');
       localStorage.setItem('productUpdatedId', product._id);
@@ -71,12 +71,12 @@ const ProductReview = ({ product, onReviewAdded }) => {
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
+
   const averageRating = product.reviews && product.reviews.length > 0
     ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
     : product.rating || 0;
 
-  // Don't show reviews section if there are no reviews
+
   if (!product.reviews || product.reviews.length === 0) {
     return null;
   }
@@ -166,4 +166,3 @@ const ProductReview = ({ product, onReviewAdded }) => {
 };
 
 export default ProductReview;
-

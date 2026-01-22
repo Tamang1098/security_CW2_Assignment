@@ -19,14 +19,14 @@ const UserNavbar = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
-  // On user pages, treat admin as not logged in (hide admin state)
-  // Admin can still browse but won't see admin-specific UI on user pages
+
+
   const isAdminOnUserPage = isAuthenticated && user?.role === 'admin' && !location.pathname.startsWith('/admin');
   const effectiveIsAuthenticated = isAdminOnUserPage ? false : isAuthenticated;
   const effectiveUser = isAdminOnUserPage ? null : user;
 
   useEffect(() => {
-    // Listen for custom event to open register modal
+
     const handleOpenRegister = () => {
       setShowRegisterModal(true);
     };
@@ -34,7 +34,7 @@ const UserNavbar = () => {
     return () => window.removeEventListener('openRegisterModal', handleOpenRegister);
   }, []);
 
-  // Fetch notification count for authenticated users (not for admin on user pages)
+
   useEffect(() => {
     if (!effectiveIsAuthenticated) {
       setUnreadNotificationCount(0);
@@ -52,16 +52,16 @@ const UserNavbar = () => {
     };
 
     fetchNotificationCount();
-    // Poll for notifications every 3 seconds for faster updates
+
     const interval = setInterval(fetchNotificationCount, 3000);
 
-    // Listen for notification updates (window events)
+
     const handleNotificationUpdate = () => {
       fetchNotificationCount();
     };
     window.addEventListener('notificationUpdated', handleNotificationUpdate);
 
-    // Listen for localStorage events (cross-tab communication)
+
     const handleStorageChange = (e) => {
       if (e.key === 'notificationUpdated' || e.key === 'orderStatusUpdated') {
         fetchNotificationCount();
@@ -69,7 +69,7 @@ const UserNavbar = () => {
     };
     window.addEventListener('storage', handleStorageChange);
 
-    // Also listen for custom events
+
     const handleCustomEvent = () => {
       fetchNotificationCount();
     };
@@ -99,7 +99,7 @@ const UserNavbar = () => {
 
         <div className="navbar-menu">
           {effectiveIsAuthenticated && effectiveUser ? (
-            // Regular user Navbar - Product Page, My Orders, Profile Icon, Logout
+
             <>
               <Link
                 to="/"
@@ -123,7 +123,7 @@ const UserNavbar = () => {
               <button onClick={() => setShowLogoutModal(true)} className="navbar-link navbar-logout">{t('logout')}</button>
             </>
           ) : (
-            // Not authenticated - show Login/Register buttons
+
             <>
               <a
                 href="/admin/login"
@@ -187,4 +187,3 @@ const UserNavbar = () => {
 };
 
 export default UserNavbar;
-

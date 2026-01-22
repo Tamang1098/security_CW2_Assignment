@@ -59,13 +59,13 @@ const Checkout = () => {
         paymentMethod
       });
 
-      // Dispatch event for new order creation (for admin panel)
-      // Dispatch event for new order creation (for admin panel)
+
+
       window.dispatchEvent(new Event('newOrderCreated'));
-      window.dispatchEvent(new Event('productUpdated')); // Notify landing page to refresh stock
+      window.dispatchEvent(new Event('productUpdated'));
 
       localStorage.setItem('newOrderCreated', Date.now().toString());
-      localStorage.setItem('productUpdated', Date.now().toString()); // Cross-tab refresh
+      localStorage.setItem('productUpdated', Date.now().toString());
 
       setTimeout(() => {
         localStorage.removeItem('newOrderCreated');
@@ -73,14 +73,14 @@ const Checkout = () => {
       }, 100);
 
       if (paymentMethod === 'online') {
-        // Show QR modal for online payment
+
         setPaymentId(res.data.payment._id);
         setOrderId(res.data.order._id);
         setShowQRModal(true);
         setSubmitting(false);
         showToast(t('paymentVerificationProgress'), 'info');
       } else {
-        // For COD, show success modal (like login modal style)
+
         setOrderNumber(res.data.order?.orderNumber);
         setShowSuccessModal(true);
         setSubmitting(false);
@@ -294,4 +294,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-

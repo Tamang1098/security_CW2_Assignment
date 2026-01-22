@@ -15,19 +15,19 @@
     padding: 2rem 2rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    /* 3 Equal Columns */
+    
     gap: 2rem;
     align-items: start;
 }
 
-/* Footer Sections */
+
 .footer-section {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-/* Branding Section */
+
 .branding-section {
     text-align: left;
 }
@@ -36,7 +36,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     color: black;
-    /* Matches brand color */
+    
     margin: 0;
     line-height: 1.2;
 }
@@ -48,7 +48,7 @@
     font-style: italic;
 }
 
-/* Contact Section - Centered */
+
 .contact-section {
     align-items: center;
     text-align: center;
@@ -75,7 +75,7 @@
     gap: 0.75rem;
 }
 
-/* Social Section - Right Aligned */
+
 .social-section {
     align-items: flex-end;
     text-align: right;
@@ -121,20 +121,17 @@
 }
 
 
-/* Contact Items */
+
 .contact-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.35rem 0.75rem;
-    /* background: #f8f9fa; No background requested explicitly, but kept for readability if desired. 
-       User said "contact harurakha dekhney gari" -> "visible clearly". 
-       Let's keep the existing bubble style but maybe simpler? 
-       Using previous style is fine. */
+    
     background: transparent;
     border-radius: 6px;
     transition: all 0.3s;
-    /* border: 1px solid #e9ecef; */
+    
 }
 
 .contact-item:hover {
@@ -154,7 +151,7 @@
     cursor: default;
 }
 
-/* Footer Bottom */
+
 .footer-bottom {
     background: #f8f9fa;
     padding: 1rem 2rem;
@@ -170,7 +167,7 @@
     font-weight:bold;
 }
 
-/* Responsive Design */
+
 @media (max-width: 968px) {
     .footer-container {
         grid-template-columns: 1fr;

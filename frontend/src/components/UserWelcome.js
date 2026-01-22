@@ -7,11 +7,11 @@ const UserWelcome = () => {
   const { user, isAuthenticated } = useAuth();
   const location = useLocation();
 
-  // Don't show welcome banner if not authenticated
+
   if (!isAuthenticated) return null;
 
-  // Hide welcome banner for admin users on user-facing pages
-  // Only show it on admin panel or for regular users
+
+
   if (user?.role === 'admin' && location.pathname !== '/admin') return null;
 
   return (
@@ -27,4 +27,3 @@ const UserWelcome = () => {
 };
 
 export default UserWelcome;
-

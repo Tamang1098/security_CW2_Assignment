@@ -27,7 +27,7 @@ const resetAdmin = async () => {
       console.log('📧 Email: surajtamang1098@gmail.com');
       console.log('🔑 Password: 12345678');
     } else {
-      // Create admin if doesn't exist
+
       const admin = new User({
         name: 'Admin',
         email: adminEmail,
@@ -40,7 +40,7 @@ const resetAdmin = async () => {
       console.log('🔑 Password: 12345678');
     }
     
-    // Verify password
+
     const admin = await User.findOne({ email: adminEmail });
     const match = await admin.comparePassword(adminPassword);
     console.log('Password verification:', match ? '✅ PASS' : '❌ FAIL');
@@ -54,4 +54,3 @@ const resetAdmin = async () => {
 };
 
 resetAdmin();
-
